@@ -12,13 +12,22 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('/', 'form@form')->name('form');
 
-Route::get('/', function () {
-    return view('tamu');
-});
+Route::get('/login', 'login@index');
 
-Route::get('/list', 'form@index');
+Route::post('/loginaksi', 'login@loginaksi')->name('loginaksi');
 
-Route::post('/tambah', 'form@form');
+Route::get('/logoutaksi', 'login@logoutaksi')->name('logoutaksi');
+
+
+Route::post('/tambah', 'form@tambah');
 
 Route::get('/cari', 'form@cari');
+
+Route::middleware('auth')->group(function(){
+
+    Route::get('/list', 'form@index')->name('list');
+    
+    Route::get('list/hari/{hari}','form@hari')->name('listhari');
+});

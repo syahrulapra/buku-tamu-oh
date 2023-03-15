@@ -2,16 +2,16 @@
 
 @section('content')
     <section>
-        <div class="flex flex-col items-center justify-center h-screen overflow-hidden relative">
-            <video autoplay loop muted class="w-screen absolute">
+        <div class="md:relative flex flex-col items-center justify-center h-screen overflow-hidden ">
+            <video autoplay loop muted class="object-cover w-screen h-screen absolute md:block">
                 <source src="{{ asset('Comp 1.mp4') }}" type="video/mp4" />
             </video>
-            <img src="{{ asset('../image/2.png') }}" alt="" draggable="false" class="relative mb-96 w-8/12 bottom-8">
-            <div class="w-4/12 rounded-lg shadow absolute mt-20">
-                <div class="space-y-0">
+            <img src="{{ asset('../image/2.png') }}" alt="" draggable="false" class="sm:w-8/12 p-2 lg:block relative max-w-full mb-96 bottom-8">
+            <div class="w-full absolute md:w-4/12 mt-36">
+                <div class="lg:space-y-0">
                     <form action="/tambah" method="POST">
                         @csrf
-                        <div class="py-10 px-8 bg-black bg-opacity-75 rounded-md">
+                        <div class="bg-black bg-opacity-75 sm:h-96 py-10 px-8 lg:rounded-md">
                             <img src="{{ asset('../image/1.png') }}" alt="" draggable="false" class="mb-5">
                             <div class="px-2">
                                 <div class="relative z-0 w-full mb-5 group">
@@ -33,6 +33,26 @@
                         </div>
                     </form>
                 </div>
+                <div class="flex w-full mt-2 font-medium">
+                    <div class="bg-black bg-opacity-75 py-5 px-8 rounded-md w-full justify-center flex">
+                        <div class="">
+                            <h1 class="text-amber-400 text-3xl text-center mb-4">{{ $tamu_kemarin->count() }}</h1>
+                        </div>
+                        <p class="text-sm text-amber-400 absolute bottom-0 mb-2 text-center">Tamu Kemarin</p>
+                    </div>
+                    <div class="bg-black bg-opacity-75 py-5 px-8 rounded-md w-full mx-2 justify-center flex">
+                        <p class="text-sm text-amber-400 absolute bottom-0 mb-2 text-center">Tamu Hari Ini</p>
+                        <div class="">
+                            <h1 class="text-amber-400 text-3xl text-center mb-4">{{ $tamu_today->count() }}</h1>
+                        </div>
+                    </div>
+                    <div class="bg-black bg-opacity-75 py-5 px-8 rounded-md w-full justify-center flex">
+                        <div class="">
+                            <h1 class="text-amber-400 text-3xl text-center mb-4">{{ $tamu_all->count() }}</h1>
+                        </div>
+                        <p class="text-sm text-amber-400 absolute bottom-0 mb-2 text-center">Total Tamu</p>
+                    </div>
+                </div>
             </div>
             <div id="modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
                 <div class="bg-white rounded-md w-3/12 flex flex-col justify-center items-center">
@@ -51,4 +71,9 @@
             </div>
         </div>
     </section>
+@endsection
+@section('footer')
+<footer class="absolute bottom-0 w-full flex justify-center bg-black bg-opacity-25">
+    <p class="text-amber-400 text-opacity-75 text-sm md:text-md">©2023 Rekayasa Perangkat Lunak. All Rights Reserved.</p>
+</footer>
 @endsection

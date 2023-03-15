@@ -8,7 +8,15 @@ use Illuminate\Http\Request;
 
 class form extends Controller
 {
-    public function form(Request $req)
+    public function form()
+    {
+        $dataKemarin = tamu::whereDate('created_at', Carbon::yesterday())->get();
+        $dataToday = tamu::whereDate('created_at', Carbon::today())->get();
+        $dataAll = tamu::all();
+        return view('tamu', ['tamu_kemarin' => $dataKemarin, 'tamu_today' => $dataToday, 'tamu_all' => $dataAll]);
+    }
+
+    public function tambah(Request $req)
     {
         $pesan = [
             'required'  => 'Harap isi data diatas',
@@ -46,18 +54,55 @@ class form extends Controller
             return redirect('list');
         }
         
-        $data = tamu::where('nama', 'like', "%".$cari."%")->orWhere('alamat', 'like', "%".$cari."%")->paginate(10);
+        $data = tamu::where('nama', 'like', "%".$cari."%")
+        ->orWhere('alamat', 'like', "%".$cari."%")
+        ->paginate(10);
 
         if ($data->count() > 0) {
-            return view('listtamu', ['data' => $data]);
+            $dataKemarin = tamu::whereDate('created_at', Carbon::yesterday())->get();
+            $dataToday = tamu::whereDate('created_at', Carbon::today())->get();
+            $dataAll = tamu::all();
+            foreach ($data as $item) {
+                $item->hari = Carbon::parse($item->created_at)->dayName;
+            }
+            return view('listtamu', ['data' => $data, 'tamu_kemarin' => $dataKemarin, 'tamu_today' => $dataToday, 'tamu_all' => $dataAll]);
         } else {
             return redirect('list')->with('error', 'Maaf, data yang Anda cari tidak ditemukan.');
         }
     }
 
     public function index()
-        {
-            $data = tamu::paginate(10);
-            return view('listtamu', ['data' => $data]);
+    {
+        $data = tamu::selectRaw('*, DATE_FORMAT(created_at, "%W") as hari')->paginate(9);
+        $dataKemarin = tamu::whereDate('created_at', Carbon::yesterday())->get();
+        $dataToday = tamu::whereDate('created_at', Carbon::today())->get();
+        $dataAll = tamu::all();
+        return view('listtamu', ['data' => $data, 'tamu_kemarin' => $dataKemarin, 'tamu_today' => $dataToday, 'tamu_all' => $dataAll]);
+    }
+
+    public function hari($hari)
+    {
+        if($hari == 'thursday'){
+            $getHari = 3;
         }
+        else if($hari == 'friday'){
+            $getHari = 4;
+        }
+        else if($hari == 'saturday'){
+            $getHari = 5;
+        }
+        else{
+            $getHari = 'error';
+        }
+
+        if($getHari == 'error'){
+            return redirect('list');
+        }
+        else{
+            $data = tamu::selectRaw('*, DATE_FORMAT(created_at, "%W") as hari')->whereRaw('weekday(created_at) = '. $getHari)->paginate(10);
+            $dataToday = tamu::whereRaw('weekday(created_at) = '. $getHari)->get();
+    
+            return view('listhari', ['data' => $data, 'tamu_today' => $dataToday]);
+        }
+    }
 }
