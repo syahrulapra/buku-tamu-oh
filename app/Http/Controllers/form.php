@@ -26,7 +26,7 @@ class form extends Controller
         ];
 
         $this->validate($req, [
-            'nama' => 'required|regex:/^[a-zA-Z\s]*$/|unique:tamu',
+            'nama' => 'required|regex:/^[a-zA-Z\s]*$/',
             'alamat' => 'required',
         ], $pesan);
 
