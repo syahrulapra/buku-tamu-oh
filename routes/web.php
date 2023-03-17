@@ -20,10 +20,11 @@ Route::post('/loginaksi', 'login@loginaksi')->name('loginaksi');
 
 Route::get('/logoutaksi', 'login@logoutaksi')->name('logoutaksi');
 
-
 Route::post('/tambah', 'form@tambah');
 
 Route::get('/cari', 'form@cari');
+
+Route::get('list/hapus/{id}','form@hapus');
 
 Route::middleware('auth')->group(function(){
 

@@ -57,6 +57,9 @@
                             <th scope="col" class="px-6 py-3">
                                 Hari
                             </th>
+                            <th scope="col" class="px-6 py-3">
+                                Aksi
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -70,6 +73,9 @@
                             </td>
                             <td class="px-6 py-4 w-6/12">
                                 {{ $d->hari }}
+                            </td>
+                            <td class="px-6 py-4 w-6/12">
+                                <a href="list/hapus/{{ $d->id }}" class="text-red-600 text-sm">Hapus</a>
                             </td>
                         </tr>
                         @endforeach

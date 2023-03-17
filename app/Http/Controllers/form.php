@@ -80,6 +80,14 @@ class form extends Controller
         return view('listtamu', ['data' => $data, 'tamu_kemarin' => $dataKemarin, 'tamu_today' => $dataToday, 'tamu_all' => $dataAll]);
     }
 
+    public function hapus($id)
+    {
+        $data=tamu::find($id);
+        $data->delete();
+
+        return redirect()->back();
+    }
+
     public function hari($hari)
     {
         if($hari == 'thursday'){
