@@ -29,6 +29,10 @@
                     < Logout
                 </a>
             </button>   
+            <div class="flex flex-col my-5">
+                <a href="{{ url('rombongan') }}" class="py-2 my-2 border text-blue-500">Input Data Rombongan</a>
+                <a href="{{ url('manual') }}" class="py-2 my-2 border text-blue-500">Input Data Manual</a>
+            </div>
         </div>
         <div class="w-9/12">
             <div class="w-full bg-blue-600 px-6 py-3 rounded-t-sm flex justify-between">

@@ -113,4 +113,94 @@ class form extends Controller
             return view('listhari', ['data' => $data, 'tamu_today' => $dataToday]);
         }
     }
+
+    public function rombongan(){
+        return view('rombongan');
+    }
+
+    public function rombonganaksi(Request $req){
+        $pesan = [
+            'required'  => 'Harap isi data diatas',
+            'alpha'     => 'Data di atas hanya bisa di isi menggunakan nama',
+            'regex'     => 'Data hanya bisa diisi dengan huruf',
+            'unique'    => 'Kamu sudah tercatat dalam database'
+        ];
+
+        $this->validate($req, [
+            'nama' => 'required',
+            'alamat' => 'required',
+        ], $pesan);
+
+        $alamat = $req->alamat;
+        $alamat = strtolower($alamat);
+        if (strpos($alamat, 'sd') !== false || strpos($alamat, 'smp') !== false || strpos($alamat, 'sma') !== false || strpos($alamat, 'smk') !== false) {
+            $alamat = strtoupper($alamat);
+        }
+        for($i = 0; $i < $req->jumlah; $i++){
+            tamu::create([
+                'nama'          => ucwords($req->nama),
+                'alamat'        => ucwords($alamat),
+                'created_at'    => Carbon::now()
+    
+            ]);
+        }
+
+        return redirect()->back();
+    }
+
+    public function manual(){
+        return view('manual');
+    }
+
+    public function manualaksi(Request $req){
+        $pesan = [
+            'required'  => 'Harap isi data diatas',
+            'alpha'     => 'Data di atas hanya bisa di isi menggunakan nama',
+            'regex'     => 'Data hanya bisa diisi dengan huruf',
+            'unique'    => 'Kamu sudah tercatat dalam database'
+        ];
+
+        $this->validate($req, [
+            'nama' => 'required',
+            'alamat' => 'required',
+            'hari' => 'required',
+        ], $pesan);
+
+        $alamat = $req->alamat;
+        $alamat = strtolower($alamat);
+        if (strpos($alamat, 'sd') !== false || strpos($alamat, 'smp') !== false || strpos($alamat, 'sma') !== false || strpos($alamat, 'smk') !== false) {
+            $alamat = strtoupper($alamat);
+        }
+
+        switch($req->hari){
+            case 'kamis':
+                $tanggal = '2023-03-16 00:00:00';
+                break;
+            case 'jumat':
+                $tanggal = '2023-03-17 00:00:00';
+                break;
+            case 'sabtu':
+                $tanggal = '2023-03-18 00:00:00';
+                break;
+        }
+        if(isset($req->jumlah)){
+            for($i = 0; $i < $req->jumlah; $i++){
+                tamu::create([
+                    'nama'          => ucwords($req->nama),
+                    'alamat'        => ucwords($alamat),
+                    'created_at'    => $tanggal
+        
+                ]);
+            }
+        }
+        else{
+            tamu::create([
+                'nama'          => ucwords($req->nama),
+                'alamat'        => ucwords($alamat),
+                'created_at'    => $tanggal
+    
+            ]);
+        }
+        return redirect()->back();
+    }
 }

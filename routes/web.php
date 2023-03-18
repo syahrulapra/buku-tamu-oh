@@ -31,4 +31,10 @@ Route::middleware('auth')->group(function(){
     Route::get('/list', 'form@index')->name('list');
     
     Route::get('list/hari/{hari}','form@hari')->name('listhari');
+
+    Route::get('rombongan', 'form@rombongan');
+    Route::post('rombongan/aksi', 'form@rombonganaksi');
+    
+    Route::get('manual', 'form@manual');
+    Route::post('manual/aksi', 'form@manualaksi');
 });
